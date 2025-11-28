@@ -159,7 +159,7 @@ const Dashboard = () => {
                 Aegis
               </h1>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -248,7 +248,7 @@ const Dashboard = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate("/alerts")}
+                  onClick={() => navigate("/alerts-history")}
                 >
                   View All
                 </Button>
