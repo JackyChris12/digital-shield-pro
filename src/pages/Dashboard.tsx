@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EmergencyButton from "@/components/EmergencyButton";
+import EmergencyStatus from "@/components/EmergencyStatus";
 import AlertCard from "@/components/AlertCard";
 import PlatformCard from "@/components/PlatformCard";
 import { Shield, Activity, LogOut, Users, AlertTriangle, Settings } from "lucide-react";
@@ -159,7 +160,7 @@ const Dashboard = () => {
                 Aegis
               </h1>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -274,6 +275,8 @@ const Dashboard = () => {
 
           {/* Right Column - Emergency */}
           <div className="space-y-6">
+            <EmergencyStatus />
+
             <Card className="p-6 border-destructive/30">
               <h2 className="text-xl font-semibold mb-4">Emergency Protocol</h2>
               <p className="text-sm text-muted-foreground mb-6">

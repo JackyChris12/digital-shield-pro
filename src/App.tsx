@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Alerts from "./pages/Alerts";
 import SafeCircle from "./pages/SafeCircle";
 import Settings from "./pages/Settings";
+import SeedData from "./pages/SeedData";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -52,6 +53,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seed-data"
+            element={
+              <ProtectedRoute>
+                <SeedData />
               </ProtectedRoute>
             }
           />

@@ -23,40 +23,33 @@ const EmergencyButton = () => {
     setActivating(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (!user) throw new Error("Not authenticated");
 
-      // Log the emergency event
-      const { error: eventError } = await supabase
-        .from("emergency_events")
-        .insert({
-          user_id: user.id,
-          notes: "Emergency activated via dashboard",
-        });
+      const location = "Unknown Location";
 
-      if (eventError) throw eventError;
+      // Call Edge Function
+      const { data, error } = await supabase.functions.invoke('send-emergency-alert', {
+        body: { location },
+      });
 
-      // Get emergency contacts
-      const { data: contacts, error: contactsError } = await supabase
-        .from("emergency_contacts")
-        .select("*")
-        .eq("user_id", user.id);
-
-      if (contactsError) throw contactsError;
+      if (error) {
+        console.error("Edge Function Error:", error);
+        throw new Error("Failed to send alerts. Please ensure the Edge Function is deployed.");
+      }
 
       toast({
         title: "Emergency Protocol Activated",
-        description: `Alert sent to ${contacts?.length || 0} emergency contacts.`,
+        description: `Email alerts sent to your Safe Circle contacts.`,
         variant: "destructive",
       });
 
-      // TODO: In production, trigger email/SMS to emergency contacts via edge function
-      
       setShowDialog(false);
     } catch (error: any) {
+      console.error("Emergency Error:", error);
       toast({
         title: "Emergency Activation Failed",
-        description: error.message,
+        description: error.message || "Please check console for details",
         variant: "destructive",
       });
     } finally {
@@ -82,7 +75,7 @@ const EmergencyButton = () => {
               Activate Emergency Protocol?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              This will immediately alert all your Safe Circle contacts and log this emergency event.
+              This will send email alerts to all your Safe Circle contacts.
               Only use in genuine emergencies.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -93,7 +86,7 @@ const EmergencyButton = () => {
               disabled={activating}
               className="bg-destructive hover:bg-destructive/90"
             >
-              {activating ? "Activating..." : "Activate Emergency"}
+              {activating ? "Sending Alerts..." : "Activate Emergency"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
