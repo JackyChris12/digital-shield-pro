@@ -26,6 +26,25 @@ const EmergencyButton = () => {
 
       if (!user) throw new Error("Not authenticated");
 
+      // First check if user has any contacts
+      const { data: contacts, error: contactsError } = await supabase
+        .from("emergency_contacts")
+        .select("id")
+        .eq("user_id", user.id);
+
+      if (contactsError) throw contactsError;
+
+      if (!contacts || contacts.length === 0) {
+        toast({
+          title: "No Contacts Found",
+          description: "Please add emergency contacts to your Safe Circle before triggering an alert.",
+          variant: "destructive",
+        });
+        setShowDialog(false);
+        setActivating(false);
+        return;
+      }
+
       const location = "Unknown Location";
 
       // Call Edge Function
@@ -35,12 +54,12 @@ const EmergencyButton = () => {
 
       if (error) {
         console.error("Edge Function Error:", error);
-        throw new Error("Failed to send alerts. Please ensure the Edge Function is deployed.");
+        throw new Error("Failed to send alerts. Please check the logs.");
       }
 
       toast({
         title: "Emergency Protocol Activated",
-        description: `Email alerts sent to your Safe Circle contacts.`,
+        description: `Alerts sent to ${contacts.length} contact(s) in your Safe Circle.`,
         variant: "destructive",
       });
 

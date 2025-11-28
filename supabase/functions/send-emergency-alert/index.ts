@@ -28,7 +28,6 @@ serve(async (req) => {
 
         console.log(`Emergency triggered by user ${user.id}`)
 
-        // 1. Create Emergency Event
         const { data: event, error: eventError } = await supabaseClient
             .from('emergency_events')
             .insert({
@@ -41,7 +40,6 @@ serve(async (req) => {
 
         if (eventError) throw eventError
 
-        // 2. Get Contacts
         const { data: contacts, error: contactsError } = await supabaseClient
             .from('emergency_contacts')
             .select('*')
@@ -51,7 +49,6 @@ serve(async (req) => {
 
         const notifications = []
 
-        // 3. Send emails
         for (const contact of contacts) {
             const { data: notification, error: notifError } = await supabaseClient
                 .from('emergency_notifications')
@@ -70,41 +67,38 @@ serve(async (req) => {
 
             try {
                 if (contact.email) {
-                    // Send email via Resend
-                    const emailResponse = await fetch('https://api.resend.com/emails', {
+                    const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${Deno.env.get('EMAILJS_PRIVATE_KEY')}`
                         },
                         body: JSON.stringify({
-                            from: 'Aegis Emergency <onboarding@resend.dev>',
-                            to: [contact.email],
-                            subject: '🚨 EMERGENCY ALERT',
-                            html: `
-                <h1 style="color: #dc2626;">🚨 Emergency Alert</h1>
-                <p><strong>${contact.name}</strong>, someone in your Safe Circle needs help!</p>
-                <p><strong>Location:</strong> ${location}</p>
-                <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
-                <p>Please check on them immediately.</p>
-              `
+                            service_id: 'service_rs94pbc',
+                            template_id: 'template_cyfjnsn',
+                            template_params: {
+                                to_email: contact.email,
+                                to_name: contact.name,
+                                location: location,
+                                time: new Date().toLocaleString()
+                            }
                         })
                     })
 
-                    if (!emailResponse.ok) {
-                        throw new Error('Email failed')
+                    if (emailResponse.ok) {
+                        console.log(`Email sent to ${contact.email}`)
+
+                        await supabaseClient
+                            .from('emergency_notifications')
+                            .update({ status: 'sent', sent_at: new Date().toISOString() })
+                            .eq('id', notification.id)
+
+                        notifications.push({ ...notification, status: 'sent' })
+                    } else {
+                        const errorText = await emailResponse.text()
+                        throw new Error(`Email failed: ${errorText}`)
                     }
-
-                    console.log(`✅ Email sent to ${contact.email}`)
-
-                    await supabaseClient
-                        .from('emergency_notifications')
-                        .update({ status: 'sent', sent_at: new Date().toISOString() })
-                        .eq('id', notification.id)
-
-                    notifications.push({ ...notification, status: 'sent' })
                 } else {
-                    // No email, mark as failed
                     await supabaseClient
                         .from('emergency_notifications')
                         .update({ status: 'failed' })
@@ -120,7 +114,11 @@ serve(async (req) => {
         }
 
         return new Response(
-            JSON.stringify({ success: true, event, notifications }),
+            JSON.stringify({
+                success: true,
+                event,
+                notifications
+            }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
 

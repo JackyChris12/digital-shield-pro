@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, XCircle, Clock, AlertTriangle, X } from "lucide-react";
 
 interface Notification {
     id: string;
@@ -19,11 +20,11 @@ const EmergencyStatus = () => {
     const [activeEvent, setActiveEvent] = useState<any>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
+    const [dismissed, setDismissed] = useState(false);
 
     useEffect(() => {
         loadActiveEmergency();
 
-        // Subscribe to new emergency events
         const eventChannel = supabase
             .channel('emergency-events')
             .on(
@@ -32,6 +33,7 @@ const EmergencyStatus = () => {
                 (payload) => {
                     if (payload.new) {
                         setActiveEvent(payload.new);
+                        setDismissed(false);
                         loadNotifications(payload.new.id);
                     }
                 }
@@ -46,7 +48,6 @@ const EmergencyStatus = () => {
     useEffect(() => {
         if (!activeEvent) return;
 
-        // Subscribe to notification updates
         const notificationChannel = supabase
             .channel(`notifications-${activeEvent.id}`)
             .on(
@@ -73,7 +74,6 @@ const EmergencyStatus = () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
 
-            // Find the most recent emergency event from the last hour
             const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
             const { data, error } = await supabase
@@ -115,8 +115,12 @@ const EmergencyStatus = () => {
         }
     };
 
+    const handleDismiss = () => {
+        setDismissed(true);
+    };
+
     if (loading) return null;
-    if (!activeEvent) return null;
+    if (!activeEvent || dismissed) return null;
 
     const getStatusIcon = (status: string) => {
         switch (status) {
@@ -128,8 +132,17 @@ const EmergencyStatus = () => {
     };
 
     return (
-        <Card className="p-4 border-destructive/50 bg-destructive/5 mb-6 animate-in fade-in slide-in-from-top-4">
-            <div className="flex items-center justify-between mb-4">
+        <Card className="p-4 border-destructive/50 bg-destructive/5 mb-6 animate-in fade-in slide-in-from-top-4 relative">
+            <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 h-6 w-6 text-destructive hover:bg-destructive/10"
+                onClick={handleDismiss}
+            >
+                <X className="h-4 w-4" />
+            </Button>
+
+            <div className="flex items-center justify-between mb-4 pr-8">
                 <div className="flex items-center gap-2 text-destructive font-bold">
                     <AlertTriangle className="w-5 h-5 animate-pulse" />
                     <span>Emergency Active</span>
