@@ -1,6 +1,6 @@
-# One Tap to Safety. Always Protected.
+# Aegis
 
-A comprehensive digital safety platform designed to protect women and girls from online violence through instant emergency response, proactive safety tools, and educational resources.
+Aegis: In Greek mythology, the Aegis was the divine shield of Zeus and Athena - an impenetrable protection that could not be shattered. A comprehensive digital safety platform designed to protect women and girls from online violence through instant emergency response, proactive safety tools, and educational resources.
 
 ## 🎯 Hackathon Alignment
 
@@ -82,7 +82,7 @@ A comprehensive digital safety platform designed to protect women and girls from
 
 1. **Clone the repository**
    ```sh
-   git clone <YOUR_GIT_URL>
+   git clone https://github.com/JackyChris12/digital-shield-pro
    cd digital-shield-pro
    ```
 
