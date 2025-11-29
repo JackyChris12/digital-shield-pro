@@ -10,6 +10,8 @@ import PlatformCard from "@/components/PlatformCard";
 import { Shield, Activity, LogOut, Users, AlertTriangle, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { mockSocialService } from "@/services/MockSocialService";
+import { alertService } from "@/services/AlertService";
 
 const Dashboard = () => {
   const [alerts, setAlerts] = useState<any[]>([]);
@@ -21,7 +23,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadData();
-    setupRealtimeSubscription();
+    const unsubscribe = setupRealtimeSubscription();
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
   }, []);
 
   const loadData = async () => {
@@ -29,7 +34,7 @@ const Dashboard = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Load alerts
+      // Load alerts from Supabase
       const { data: alertsData } = await supabase
         .from("alerts")
         .select("*")
@@ -37,14 +42,46 @@ const Dashboard = () => {
         .order("created_at", { ascending: false })
         .limit(5);
 
-      // Load platforms
+      // Load platforms from Supabase
       const { data: platformsData } = await supabase
         .from("platforms")
         .select("*")
         .eq("user_id", user.id);
 
-      setAlerts(alertsData || []);
-      setPlatforms(platformsData || []);
+      // Merge mock alerts with Supabase alerts
+      const mockAlerts = alertService.getAlerts();
+      // Combine and sort by date descending
+      const allAlerts = [...(alertsData || []), ...mockAlerts]
+        .sort((a: any, b: any) => new Date(b.created_at || b.timestamp).getTime() - new Date(a.created_at || a.timestamp).getTime())
+        .slice(0, 5);
+
+      setAlerts(allAlerts);
+
+      // Merge Supabase data with Mock Service status
+      const mergedPlatforms = platformsData || [];
+
+      // Check mock service for any connected platforms not in DB or to override
+      ['twitter', 'instagram', 'tiktok'].forEach(p => {
+        if (mockSocialService.isConnected(p)) {
+          const existing = mergedPlatforms.find((mp: any) => mp.platform_name === p);
+          if (existing) {
+            existing.is_active = true;
+          } else {
+            mergedPlatforms.push({
+              id: `mock-${p}`,
+              platform_name: p,
+              is_active: true,
+              user_id: user.id,
+              access_token: '',
+              refresh_token: '',
+              created_at: new Date().toISOString(),
+              last_sync_at: new Date().toISOString()
+            });
+          }
+        }
+      });
+
+      setPlatforms(mergedPlatforms);
     } catch (error: any) {
       toast({
         title: "Error loading data",
@@ -57,29 +94,26 @@ const Dashboard = () => {
   };
 
   const setupRealtimeSubscription = () => {
-    const channel = supabase
-      .channel("alerts")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "alerts",
-        },
-        (payload) => {
-          setAlerts((prev) => [payload.new, ...prev].slice(0, 5));
-          toast({
-            title: "New Threat Detected",
-            description: "A new alert has been logged.",
-            variant: "destructive",
-          });
-        }
-      )
-      .subscribe();
+    // Initial load of mock alerts
+    const currentAlerts = alertService.getAlerts();
+    if (currentAlerts.length > 0) {
+      // We don't want to overwrite Supabase alerts completely, but for this demo we prioritize mock alerts
+      // Ideally we'd merge them here too, but for simplicity let's just show mock alerts if they exist
+      // setAlerts(currentAlerts.slice(0, 5));
+    }
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // Subscribe to new alerts
+    const unsubscribe = alertService.subscribe((updatedAlerts) => {
+      setAlerts(updatedAlerts.slice(0, 5));
+
+      // Check if the latest alert is new (to show toast)
+      const latest = updatedAlerts[0];
+      if (latest && latest.timestamp.getTime() > Date.now() - 1000) {
+        // Toast is already handled in MockSocialService
+      }
+    });
+
+    return unsubscribe;
   };
 
   const handleSignOut = async () => {
@@ -88,6 +122,16 @@ const Dashboard = () => {
   };
 
   const handleBlockAlert = async (alertId: string) => {
+    // Handle mock alerts
+    if (alertId.startsWith('alert_')) {
+      alertService.updateAlert(alertId, 'resolved');
+      toast({
+        title: "Alert Resolved",
+        description: "The alert has been marked as resolved.",
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from("alerts")
@@ -116,6 +160,16 @@ const Dashboard = () => {
   };
 
   const handleIgnoreAlert = async (alertId: string) => {
+    // Handle mock alerts
+    if (alertId.startsWith('alert_')) {
+      alertService.updateAlert(alertId, 'reviewed');
+      toast({
+        title: "Alert Reviewed",
+        description: "The alert has been marked as reviewed.",
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from("alerts")
@@ -147,42 +201,7 @@ const Dashboard = () => {
   const newAlerts = alerts.filter((a) => a.status === "new").length;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/50 bg-card/30 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20">
-                <Shield className="w-6 h-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Aegis
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/safe-circle")}
-              >
-                <Users className="w-5 h-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/settings")}
-              >
-                <Settings className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" onClick={handleSignOut}>
-                <LogOut className="w-5 h-5" />
-              </Button>
-            </div>
-          </div >
-        </div >
-      </header >
-
+    <div className="min-h-screen">
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column */}
@@ -221,16 +240,22 @@ const Dashboard = () => {
               <div className="grid gap-4">
                 {["twitter", "instagram", "tiktok"].map((platformName) => {
                   const platform = platforms.find((p) => p.platform_name === platformName);
+                  const isConnected = platform?.is_active || mockSocialService.isConnected(platformName);
+
+                  // Create a display platform object if one doesn't exist in DB
+                  const displayPlatform = platform || {
+                    id: `mock-${platformName}`,
+                    platform_name: platformName,
+                    is_active: isConnected
+                  };
+
                   return (
                     <PlatformCard
                       key={platformName}
-                      platform={platform}
+                      platform={displayPlatform}
                       platformName={platformName}
                       onConnect={() => {
-                        toast({
-                          title: "Coming Soon",
-                          description: `${platformName} integration will be available in production.`,
-                        });
+                        navigate("/social-monitoring");
                       }}
                     />
                   );
@@ -301,10 +326,10 @@ const Dashboard = () => {
                 <li>• Export evidence logs for documentation</li>
               </ul>
             </Card>
-          </div >
-        </div >
-      </main >
-    </div >
+          </div>
+        </div>
+      </main>
+    </div>
   );
 };
 

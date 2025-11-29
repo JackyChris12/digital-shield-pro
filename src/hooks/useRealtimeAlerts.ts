@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertSeverity, AlertStatus, AlertType, Platform, ThreatType } from '@/features/alerts/types';
 import { Database } from '@/integrations/supabase/types';
+import { alertService, ThreatAlert } from '@/services/AlertService';
 
 type SupabaseAlert = Database['public']['Tables']['alerts']['Row'];
 
@@ -51,6 +52,44 @@ export const useRealtimeAlerts = () => {
         };
     };
 
+    const mapMockAlertToAlert = (mockAlert: ThreatAlert): Alert => {
+        return {
+            id: mockAlert.id,
+            platform: mockAlert.platform as Platform,
+            threat_type: (mockAlert.type as any) || 'harassment',
+            type: 'threat_detection',
+            severity: mockAlert.severity as AlertSeverity,
+            status: (mockAlert.status === 'new' ? 'active' : mockAlert.status === 'resolved' ? 'resolved' : 'dismissed') as AlertStatus,
+            content: {
+                message: mockAlert.comment,
+                sender: mockAlert.author,
+                timestamp: mockAlert.timestamp.toISOString(),
+            },
+            ai_analysis: {
+                toxicity_score: mockAlert.severity === 'critical' ? 0.95 : mockAlert.severity === 'high' ? 0.8 : 0.6,
+                categories: [(mockAlert.type as any) || 'harassment'],
+                confidence: 0.9,
+                flagged_keywords: [],
+                severity_justification: 'Mock AI Analysis',
+            },
+            location: {
+                coordinates: { lat: 0, lng: 0 },
+                address: 'Unknown',
+            },
+            source: 'web_app', // Use a valid DeviceSource
+            trigger: 'ai_detection',
+            safeCircle: {
+                notified: false,
+                notified_count: 0,
+                responses: [],
+                escalated: false,
+            },
+            user_actions: [],
+            timestamp: mockAlert.timestamp.toISOString(),
+            description: mockAlert.message,
+        };
+    };
+
     const fetchAlerts = async () => {
         try {
             const { data, error } = await supabase
@@ -60,9 +99,19 @@ export const useRealtimeAlerts = () => {
 
             if (error) throw error;
 
+            let combinedAlerts: Alert[] = [];
+
             if (data) {
-                setAlerts(data.map(mapSupabaseAlertToAlert));
+                combinedAlerts = data.map(mapSupabaseAlertToAlert);
             }
+
+            // Merge mock alerts
+            const mockAlerts = alertService.getAlerts().map(mapMockAlertToAlert);
+            combinedAlerts = [...combinedAlerts, ...mockAlerts].sort((a, b) =>
+                new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            );
+
+            setAlerts(combinedAlerts);
         } catch (error) {
             console.error('Error fetching alerts:', error);
         } finally {
@@ -79,24 +128,19 @@ export const useRealtimeAlerts = () => {
                 'postgres_changes',
                 { event: '*', schema: 'public', table: 'alerts' },
                 (payload) => {
-                    if (payload.eventType === 'INSERT') {
-                        setAlerts((prev) => {
-                            if (prev.some(a => a.id === payload.new.id)) return prev;
-                            return [mapSupabaseAlertToAlert(payload.new as SupabaseAlert), ...prev];
-                        });
-                    } else if (payload.eventType === 'UPDATE') {
-                        setAlerts((prev) => prev.map((alert) =>
-                            alert.id === payload.new.id ? mapSupabaseAlertToAlert(payload.new as SupabaseAlert) : alert
-                        ));
-                    } else if (payload.eventType === 'DELETE') {
-                        setAlerts((prev) => prev.filter((alert) => alert.id !== payload.old.id));
-                    }
+                    fetchAlerts(); // Re-fetch to keep simple merging logic
                 }
             )
             .subscribe();
 
+        // Subscribe to Mock Alert Service changes
+        const unsubscribeMock = alertService.subscribe(() => {
+            fetchAlerts();
+        });
+
         return () => {
             supabase.removeChannel(channel);
+            unsubscribeMock();
         };
     }, []);
 
