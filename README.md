@@ -2,7 +2,7 @@ AEGIS SHIELD - UNIVERSAL DIGITAL PROTECTION PLATFORM
 🏆 POWERHACK HACKATHON WINNING SOLUTION
 AI-Powered Protection Against Digital Violence for Women & Girls
 
-LIVE DEMO: https://692af138ec8253e62086e9eb--aegiss.netlify.app/
+LIVE DEMO: https://aegiss.netlify.app/
 
 
 PITCH DECK: https://www.canva.com/design/DAG6EYYS9cE/nFMP04RaqopmrFNdoXSa8w/edit?utm_content=DAG6EYYS9cE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
