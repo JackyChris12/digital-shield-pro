@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import SocialMediaSafety from "@/components/settings/SocialMediaSafety";
+import EmergencyProtocols from "@/components/settings/EmergencyProtocols";
+import PrivacyControls from "@/components/settings/PrivacyControls";
+import ProfileManagement from "@/components/settings/ProfileManagement";
+import NotificationPreferences from "@/components/settings/NotificationPreferences";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -28,14 +33,31 @@ const Settings = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Card className="p-8">
-          <h2 className="text-xl font-semibold mb-4">App Settings</h2>
-          <p className="text-muted-foreground">
-            Settings panel coming soon. This will include platform configurations,
-            notification preferences, and security options.
-          </p>
-        </Card>
+      <main className="container mx-auto px-4 py-8 max-w-6xl">
+        <Tabs defaultValue="social-media" className="w-full">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="social-media">Social Media Safety</TabsTrigger>
+            <TabsTrigger value="emergency">Emergency Protocols</TabsTrigger>
+            <TabsTrigger value="privacy">Privacy Controls</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          </TabsList>
+          <TabsContent value="social-media" className="mt-6">
+            <SocialMediaSafety />
+          </TabsContent>
+          <TabsContent value="emergency" className="mt-6">
+            <EmergencyProtocols />
+          </TabsContent>
+          <TabsContent value="privacy" className="mt-6">
+            <PrivacyControls />
+          </TabsContent>
+          <TabsContent value="profile" className="mt-6">
+            <ProfileManagement />
+          </TabsContent>
+          <TabsContent value="notifications" className="mt-6">
+            <NotificationPreferences />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
