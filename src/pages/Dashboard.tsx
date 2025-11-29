@@ -202,14 +202,14 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen">
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-6">
+      <main className="container mx-auto px-4 py-8 max-w-7xl md:px-6 sm:px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-4">
+          {/* Left Column - Mobile: Full width, Desktop: 2/3 */}
+          <div className="lg:col-span-2 space-y-6 md:space-y-4">
             {/* Protection Status */}
-            <Card className="p-6 border-primary/30 shadow-lg">
+            <Card className="p-6 md:p-4 border-primary/30 shadow-lg">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold flex items-center gap-2">
+                <h2 className="text-xl md:text-lg font-semibold flex items-center gap-2">
                   <Activity className="w-5 h-5 text-primary" />
                   Protection Status
                 </h2>
@@ -219,25 +219,25 @@ const Dashboard = () => {
                   {protectionActive ? "Active" : "Inactive"}
                 </Badge>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg bg-muted/30">
+              <div className="grid grid-cols-2 gap-4 md:gap-3">
+                <div className="p-4 md:p-3 rounded-lg bg-muted/30">
                   <p className="text-sm text-muted-foreground">Platforms Connected</p>
                   <p className="text-2xl font-bold text-primary">{activePlatforms}/3</p>
                 </div>
-                <div className="p-4 rounded-lg bg-muted/30">
+                <div className="p-4 md:p-3 rounded-lg bg-muted/30">
                   <p className="text-sm text-muted-foreground">Active Alerts</p>
-                  <p className="text-2xl font-bold text-destructive">{newAlerts}</p>
+                  <p className="text-2xl md:text-xl font-bold text-destructive">{newAlerts}</p>
                 </div>
               </div>
             </Card>
 
             {/* Connected Platforms */}
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Card className="p-6 md:p-4">
+              <h2 className="text-xl md:text-lg font-semibold mb-4 md:mb-3 flex items-center gap-2">
                 <Shield className="w-5 h-5" />
                 Connected Platforms
               </h2>
-              <div className="grid gap-4">
+              <div className="grid gap-4 md:gap-3">
                 {["twitter", "instagram", "tiktok"].map((platformName) => {
                   const platform = platforms.find((p) => p.platform_name === platformName);
                   const isConnected = platform?.is_active || mockSocialService.isConnected(platformName);
@@ -264,9 +264,9 @@ const Dashboard = () => {
             </Card>
 
             {/* Recent Alerts */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Card className="p-6 md:p-4">
+              <div className="flex items-center justify-between mb-4 md:mb-3">
+                <h2 className="text-xl md:text-lg font-semibold flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" />
                   Recent Alerts
                 </h2>
@@ -297,8 +297,8 @@ const Dashboard = () => {
             </Card>
           </div>
 
-          {/* Right Column - Emergency */}
-          <div className="space-y-6">
+          {/* Right Column - Emergency (Hidden on mobile - floating button instead) */}
+          <div className="space-y-6 md:space-y-4 hidden lg:block">
             <EmergencyStatus />
 
             <Card className="p-6 border-destructive/30">

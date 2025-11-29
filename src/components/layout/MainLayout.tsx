@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Button, Avatar, Dropdown, Space, Breadcrumb, theme, ConfigProvider } from 'antd';
+import { Layout, Menu, Button, Avatar, Dropdown, Space, Breadcrumb, theme, ConfigProvider, Grid } from 'antd';
 import {
     DashboardOutlined, AlertOutlined, TeamOutlined, SettingOutlined,
     MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, LogoutOutlined,
@@ -8,10 +8,16 @@ import {
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { supabase } from '@/integrations/supabase/client';
+import MobileBottomNav from '@/components/MobileBottomNav';
+import MobileEmergencyButton from '@/components/MobileEmergencyButton';
 
 const { Header, Sider, Content } = Layout;
+const { useBreakpoint } = Grid;
 
 const MainLayout: React.FC = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md; // < 768px (Matches CSS mobile breakpoint)
+
     const [collapsed, setCollapsed] = useState(false);
     const [userName, setUserName] = useState<string>('Loading...');
     const navigate = useNavigate();
@@ -158,6 +164,7 @@ const MainLayout: React.FC = () => {
                     collapsible
                     collapsed={collapsed}
                     theme={currentTheme === 'dark' ? 'dark' : 'light'}
+                    className="desktop-only"
                     style={{
                         borderRight: '1px solid #f0f0f0',
                         overflow: 'auto',
@@ -181,15 +188,23 @@ const MainLayout: React.FC = () => {
                         style={{ borderRight: 0 }}
                     />
                 </Sider>
-                <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
-                    <Header style={{
-                        padding: '0 24px',
-                        background: currentTheme === 'dark' ? '#1d2b3a' : colorBgContainer,
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderBottom: currentTheme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #f0f0f0'
-                    }}>
+                <Layout
+                    style={{
+                        marginLeft: isMobile ? 0 : (collapsed ? 80 : 200),
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    <Header
+                        className="desktop-only"
+                        style={{
+                            padding: '0 24px',
+                            background: currentTheme === 'dark' ? '#1d2b3a' : colorBgContainer,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            borderBottom: currentTheme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #f0f0f0'
+                        }}
+                    >
                         <Space>
                             <Button
                                 type="text"
@@ -223,16 +238,26 @@ const MainLayout: React.FC = () => {
                         </Space>
                     </Header>
                     <Content
+                        className="mobile-content"
                         style={{
-                            margin: '24px 16px',
-                            padding: 24,
+                            margin: isMobile ? '16px 8px' : '24px 16px',
+                            padding: isMobile ? 16 : 24,
                             minHeight: 280,
-                            background: 'transparent', // Remove white box
-                            overflow: 'auto'
+                            background: 'transparent',
+                            overflow: 'auto',
+                            paddingBottom: isMobile ? 'calc(80px + env(safe-area-inset-bottom, 0px))' : '24px'
                         }}
                     >
                         <Outlet />
                     </Content>
+
+                    {/* Mobile Navigation Components - Only render on mobile */}
+                    {isMobile && (
+                        <>
+                            <MobileBottomNav />
+                            <MobileEmergencyButton />
+                        </>
+                    )}
                 </Layout>
             </Layout>
         </ConfigProvider>

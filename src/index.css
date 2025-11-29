@@ -53,11 +53,11 @@ All colors MUST be HSL.
     --threat-high: 0 84% 60%;
     --threat-medium: 38 92% 50%;
     --threat-low: 142 76% 36%;
-    
+
     /* Gradients */
     --gradient-shield: linear-gradient(135deg, hsl(190 95% 55%) 0%, hsl(217 91% 60%) 100%);
     --gradient-alert: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(340 82% 52%) 100%);
-    
+
     /* Shadows */
     --shadow-glow: 0 0 30px hsla(190 95% 55% / 0.15);
     --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -115,7 +115,7 @@ All colors MUST be HSL.
     --threat-high: 0 84% 60%;
     --threat-medium: 38 92% 50%;
     --threat-low: 142 76% 46%;
-    
+
     /* Shadows */
     --shadow-glow: 0 0 30px hsla(190 95% 55% / 0.3);
     --shadow-card: 0 4px 24px hsla(0 0% 0% / 0.4);
@@ -138,5 +138,279 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    /* Mobile-first font size to prevent zoom on input focus */
+    font-size: 16px;
+  }
+
+  /* Mobile-first: Prevent zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ========================================
+   MOBILE-FIRST RESPONSIVE SYSTEM
+   ======================================== */
+@layer utilities {
+
+  /* TOUCH TARGET ENFORCEMENT - NON-NEGOTIABLE */
+  button,
+  .btn,
+  [role="button"],
+  a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+    touch-action: manipulation;
+  }
+
+  /* Emergency button gets extra size for stress situations */
+  .emergency-btn {
+    min-height: 60px;
+    min-width: 60px;
+    font-size: 16px;
+  }
+
+  /* MOBILE EMERGENCY PROTOCOL - NON-NEGOTIABLE */
+  .emergency-protocol-mobile {
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 10000;
+    touch-action: manipulation;
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
+    transition: transform 0.1s ease-out;
+  }
+
+  .emergency-protocol-mobile:active {
+    transform: scale(0.95);
+  }
+
+  /* BOTTOM NAVIGATION - iOS/Android pattern */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    background: hsl(var(--background));
+    border-top: 1px solid hsl(var(--border));
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-top: 8px;
+    padding-bottom: env(safe-area-inset-bottom, 8px);
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .bottom-nav .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px;
+    text-decoration: none;
+    color: hsl(var(--muted-foreground));
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .bottom-nav .nav-item.active {
+    color: hsl(var(--primary));
+  }
+
+  .bottom-nav .nav-item:active {
+    transform: scale(0.95);
+  }
+
+  .bottom-nav .nav-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+  }
+
+  .bottom-nav .nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* SAFE AREA SUPPORT */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  /* EMERGENCY MODE ENHANCEMENTS */
+  .emergency-active {
+    animation: emergency-pulse 2s ease-in-out infinite;
+  }
+
+  .emergency-active button {
+    transform: scale(1.05);
+  }
+
+  @keyframes emergency-pulse {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+
+    50% {
+      box-shadow: 0 0 0 20px rgba(220, 38, 38, 0);
+    }
+  }
+
+  /* Keep screen awake during emergency (visual indicator) */
+  @keyframes keep-awake {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.999;
+    }
+  }
+
+  /* MOBILE RESPONSIVE UTILITIES */
+  @media (max-width: 767px) {
+
+    /* Hide desktop sidebar on mobile */
+    .desktop-only {
+      display: none !important;
+    }
+
+    /* Show mobile navigation */
+    .mobile-only {
+      display: flex !important;
+    }
+
+    /* Mobile content spacing - account for bottom nav */
+    .mobile-content {
+      padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Mobile typography scale */
+    h1 {
+      font-size: 1.5rem !important;
+    }
+
+    h2 {
+      font-size: 1.25rem !important;
+    }
+
+    h3 {
+      font-size: 1.125rem !important;
+    }
+
+    .body-text {
+      font-size: 1rem !important;
+    }
+
+    /* Mobile grid → stack */
+    .mobile-stack {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px;
+    }
+
+    /* Mobile cards */
+    .mobile-card {
+      width: 100% !important;
+      margin-bottom: 16px;
+    }
+
+    /* Larger touch targets on mobile */
+    .ant-btn,
+    button {
+      min-height: 44px;
+      padding: 12px 16px;
+    }
+
+    /* Mobile-friendly modals */
+    .ant-modal {
+      max-width: calc(100vw - 32px) !important;
+      margin: 16px auto !important;
+    }
+
+    .ant-modal-content {
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+  }
+
+  /* Tablet breakpoint */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .mobile-only {
+      display: none !important;
+    }
+  }
+
+  /* Desktop */
+  @media (min-width: 1024px) {
+    .mobile-only {
+      display: none !important;
+    }
+
+    .emergency-protocol-mobile {
+      display: none;
+    }
+  }
+
+  /* ACCESSIBILITY - Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* HIGH CONTRAST MODE for stress situations */
+  .high-contrast {
+    filter: contrast(1.5);
+  }
+
+  /* THUMB ZONE OPTIMIZATION HELPERS */
+  .thumb-zone-green {
+    /* Natural thumb reach - bottom right for right-handed users */
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+    right: 20px;
+  }
+
+  .thumb-zone-yellow {
+    /* Requires hand adjustment - bottom left */
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+    left: 20px;
+  }
+
+  .thumb-zone-red {
+    /* Two-handed required - top areas */
+    margin-top: env(safe-area-inset-top, 0px);
   }
 }
