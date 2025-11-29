@@ -27,14 +27,14 @@ const PlatformCard = ({ platform, platformName, onConnect }: PlatformCardProps) 
   const isConnected = platform?.is_active;
 
   return (
-    <Card className="p-4 hover:bg-card/50 transition-colors">
+    <Card className="p-4 md:p-3 hover:bg-card/50 transition-colors">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className={`p-2 rounded-lg ${isConnected ? 'bg-success/20' : 'bg-muted'}`}>
             <Icon className={`w-5 h-5 ${isConnected ? 'text-success' : 'text-muted-foreground'}`} />
           </div>
           <div>
-            <h3 className="font-semibold capitalize">{platformName}</h3>
+            <h3 className="font-semibold capitalize text-base md:text-sm">{platformName}</h3>
             {isConnected && platform?.last_sync_at && (
               <p className="text-xs text-muted-foreground">
                 Last synced: {new Date(platform.last_sync_at).toLocaleDateString()}
@@ -59,7 +59,7 @@ const PlatformCard = ({ platform, platformName, onConnect }: PlatformCardProps) 
         <Button
           size="sm"
           variant="outline"
-          className="w-full"
+          className="w-full min-h-[44px]"
           onClick={onConnect}
         >
           Connect {platformName}

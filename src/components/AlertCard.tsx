@@ -64,9 +64,9 @@ const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
   const displaySender = alert.sender || alert.author || 'Unknown';
 
   return (
-    <Card className="p-4 border-l-4 hover:bg-card/50 transition-colors" style={{ borderLeftColor: `hsl(var(--${threatColor}))` }}>
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
+    <Card className="p-4 md:p-3 border-l-4 hover:bg-card/50 transition-colors" style={{ borderLeftColor: `hsl(var(--${threatColor}))` }}>
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <AlertCircle className="w-4 h-4" style={{ color: `hsl(var(--${threatColor}))` }} />
           <Badge variant="outline" className="capitalize">
             {alert.platform}
@@ -82,7 +82,7 @@ const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
             {threatLevel} threat
           </Badge>
         </div>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-muted-foreground whitespace-nowrap">
           {formatDate()}
         </span>
       </div>
@@ -108,7 +108,7 @@ const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
             size="sm"
             variant="destructive"
             onClick={() => onBlock?.(alert.id)}
-            className="flex-1"
+            className="flex-1 min-h-[44px]"
           >
             <Ban className="w-4 h-4 mr-1" />
             Block
@@ -117,7 +117,7 @@ const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
             size="sm"
             variant="outline"
             onClick={() => onIgnore?.(alert.id)}
-            className="flex-1"
+            className="flex-1 min-h-[44px]"
           >
             <Eye className="w-4 h-4 mr-1" />
             Ignore

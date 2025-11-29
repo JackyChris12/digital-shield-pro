@@ -196,28 +196,28 @@ const SafeCircle = () => {
 
   return (
     <div className="min-h-screen">
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Card className="p-6 mb-6 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
-          <h2 className="font-semibold mb-2">Your Safe Circle</h2>
+      <main className="container mx-auto px-4 py-8 max-w-4xl md:px-6 sm:px-4">
+        <Card className="p-6 md:p-4 mb-6 md:mb-4 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
+          <h2 className="font-semibold mb-2 text-lg md:text-base">Your Safe Circle</h2>
           <p className="text-sm text-muted-foreground">
             These trusted contacts will be notified immediately when you activate the emergency protocol.
             Add people you trust who can help in critical situations.
           </p>
         </Card>
 
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-4 gap-3">
+          <h2 className="text-xl md:text-lg font-semibold">
             Emergency Contacts ({contacts.length + mockContacts.length})
           </h2>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto flex-col sm:flex-row">
             <Dialog open={mockDialogOpen} onOpenChange={setMockDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">
                   <UserPlus className="w-4 h-4 mr-2" />
                   Add Demo Contact
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-[calc(100vw-32px)] sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle>Add Demo Contact</DialogTitle>
                   <DialogDescription>
@@ -297,12 +297,12 @@ const SafeCircle = () => {
             </Dialog>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto min-h-[44px]">
                   <UserPlus className="w-4 h-4 mr-2" />
                   Add Contact
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-[calc(100vw-32px)] sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle>Add Emergency Contact</DialogTitle>
                   <DialogDescription>
@@ -373,7 +373,7 @@ const SafeCircle = () => {
           ) : (
             <>
               {contacts.map((contact) => (
-                <Card key={contact.id} className="p-4 hover:bg-card/50 transition-colors">
+                <Card key={contact.id} className="p-4 md:p-3 hover:bg-card/50 transition-colors">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -398,7 +398,7 @@ const SafeCircle = () => {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleDeleteContact(contact.id)}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 min-h-[44px] min-w-[44px]"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -407,7 +407,7 @@ const SafeCircle = () => {
               ))}
 
               {mockContacts.map((contact) => (
-                <Card key={contact.id} className="p-4 hover:bg-card/50 transition-colors border-primary/30">
+                <Card key={contact.id} className="p-4 md:p-3 hover:bg-card/50 transition-colors border-primary/30">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -442,7 +442,7 @@ const SafeCircle = () => {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleDeleteMockContact(contact.id)}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 min-h-[44px] min-w-[44px]"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
