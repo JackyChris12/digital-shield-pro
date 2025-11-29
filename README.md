@@ -335,9 +335,6 @@ Brian Kioko - Backend Engineering and AI Integration
 
 Silvia Njeri - Frontend Development and UX Design
 
-Maureen Muriithi - Full Stack Architecture & Team Lead
-
-Miriam Wanjohi - Frontend Development & UI Design
 
 📞 Support & Contact
 For technical support, feature requests, or security concerns:
