@@ -1,6 +1,6 @@
 # Aegis Shield – Universal Digital Protection Platform
 
-[![PowerHack 2025 Winner](https://img.shields.io/badge/PowerHack%202024-Winner-blue)](https://powerhack.com)
+[![PowerHack 2025 Winner](https://img.shields.io/badge/PowerHack%202025-Winner-blue)](https://powerhack.com)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-aegiss.netlify.app-blue)](https://aegiss.netlify.app)
 [![Pitch Deck](https://img.shields.io/badge/Pitch%20Deck-Canva-orange)](https://canva-link-provided)
 
