@@ -4,10 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EmergencyButton from "@/components/EmergencyButton";
-<<<<<<< HEAD
 import EmergencyStatus from "@/components/EmergencyStatus";
-=======
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
 import AlertCard from "@/components/AlertCard";
 import PlatformCard from "@/components/PlatformCard";
 import { Shield, Activity, LogOut, Users, AlertTriangle, Settings } from "lucide-react";
@@ -163,11 +160,6 @@ const Dashboard = () => {
                 Aegis
               </h1>
             </div>
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -187,9 +179,9 @@ const Dashboard = () => {
                 <LogOut className="w-5 h-5" />
               </Button>
             </div>
-          </div>
-        </div>
-      </header>
+          </div >
+        </div >
+      </header >
 
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -227,7 +219,7 @@ const Dashboard = () => {
                 Connected Platforms
               </h2>
               <div className="grid gap-4">
-                {["twitter", "instagram", "whatsapp"].map((platformName) => {
+                {["twitter", "instagram", "tiktok"].map((platformName) => {
                   const platform = platforms.find((p) => p.platform_name === platformName);
                   return (
                     <PlatformCard
@@ -256,7 +248,7 @@ const Dashboard = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate("/alerts")}
+                  onClick={() => navigate("/alerts-history")}
                 >
                   View All
                 </Button>
@@ -282,11 +274,8 @@ const Dashboard = () => {
 
           {/* Right Column - Emergency */}
           <div className="space-y-6">
-<<<<<<< HEAD
             <EmergencyStatus />
 
-=======
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
             <Card className="p-6 border-destructive/30">
               <h2 className="text-xl font-semibold mb-4">Emergency Protocol</h2>
               <p className="text-sm text-muted-foreground mb-6">
@@ -312,10 +301,10 @@ const Dashboard = () => {
                 <li>• Export evidence logs for documentation</li>
               </ul>
             </Card>
-          </div>
-        </div>
-      </main>
-    </div>
+          </div >
+        </div >
+      </main >
+    </div >
   );
 };
 

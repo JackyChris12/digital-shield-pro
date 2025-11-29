@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Twitter, Instagram, MessageCircle, CheckCircle2, XCircle } from "lucide-react";
+import { Twitter, Instagram, MessageCircle, CheckCircle2, XCircle, Music2 } from "lucide-react";
 
 interface Platform {
   id: string;
@@ -19,7 +19,7 @@ interface PlatformCardProps {
 const platformIcons = {
   twitter: Twitter,
   instagram: Instagram,
-  whatsapp: MessageCircle,
+  tiktok: Music2,
 };
 
 const PlatformCard = ({ platform, platformName, onConnect }: PlatformCardProps) => {
@@ -56,9 +56,9 @@ const PlatformCard = ({ platform, platformName, onConnect }: PlatformCardProps) 
       </div>
 
       {!isConnected && (
-        <Button 
-          size="sm" 
-          variant="outline" 
+        <Button
+          size="sm"
+          variant="outline"
           className="w-full"
           onClick={onConnect}
         >

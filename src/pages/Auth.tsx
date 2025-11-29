@@ -10,6 +10,7 @@ import { Shield, Mail, Lock, User } from "lucide-react";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -22,7 +23,19 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (isForgotPassword) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth?type=recovery`,
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Check your email",
+          description: "We've sent you a password reset link.",
+        });
+        setIsForgotPassword(false);
+      } else if (isSignUp) {
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -38,9 +51,10 @@ const Auth = () => {
 
         toast({
           title: "Account created!",
-          description: "Welcome to Aegis. Redirecting to dashboard...",
+          description: "Please check your email to confirm your account before logging in.",
         });
-        navigate("/dashboard");
+        // Don't navigate immediately, let them read the message
+        setIsSignUp(false);
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -56,9 +70,29 @@ const Auth = () => {
         navigate("/dashboard");
       }
     } catch (error: any) {
+      let title = "Authentication Error";
+      let description = error.message;
+
+      // Handle Rate Limiting (429)
+      if (error.status === 429 || error.message?.includes("rate limit")) {
+        title = "Too Many Requests";
+        description = "You've made too many attempts. Please wait a moment before trying again.";
+      }
+
+      // Handle Email Not Confirmed (400)
+      if (error.message?.includes("Email not confirmed")) {
+        title = "Email Not Confirmed";
+        description = "Please check your email and click the confirmation link to activate your account.";
+      }
+      // Handle Invalid Credentials (400)
+      else if (error.status === 400 || error.message?.includes("Invalid login credentials")) {
+        title = "Login Failed";
+        description = "Invalid email or password. Please check your credentials.";
+      }
+
       toast({
-        title: "Authentication Error",
-        description: error.message,
+        title,
+        description,
         variant: "destructive",
       });
     } finally {
@@ -77,12 +111,14 @@ const Auth = () => {
             Aegis
           </h1>
           <p className="text-muted-foreground">
-            Your digital shield against online harassment
+            {isForgotPassword
+              ? "Reset your password"
+              : "Your digital shield against online harassment"}
           </p>
         </div>
 
         <form onSubmit={handleAuth} className="space-y-4">
-          {isSignUp && (
+          {isSignUp && !isForgotPassword && (
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
               <div className="relative">
@@ -116,37 +152,66 @@ const Auth = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="pl-10"
-              />
+          {!isForgotPassword && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                {!isSignUp && (
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotPassword(true)}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pl-10"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Please wait..." : isSignUp ? "Create Account" : "Sign In"}
+            {loading
+              ? "Please wait..."
+              : isForgotPassword
+                ? "Send Reset Link"
+                : isSignUp
+                  ? "Create Account"
+                  : "Sign In"}
           </Button>
         </form>
 
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            {isSignUp
-              ? "Already have an account? Sign in"
-              : "Need an account? Sign up"}
-          </button>
+        <div className="text-center space-y-2">
+          {isForgotPassword ? (
+            <button
+              type="button"
+              onClick={() => setIsForgotPassword(false)}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Back to Sign In
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Need an account? Sign up"}
+            </button>
+          )}
         </div>
       </Card>
     </div>
