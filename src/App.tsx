@@ -9,7 +9,10 @@ import Dashboard from "./pages/Dashboard";
 import Alerts from "./pages/Alerts";
 import SafeCircle from "./pages/SafeCircle";
 import Settings from "./pages/Settings";
+<<<<<<< HEAD
 import SeedData from "./pages/SeedData";
+=======
+>>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -56,6 +59,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+<<<<<<< HEAD
           <Route
             path="/seed-data"
             element={
@@ -64,6 +68,8 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+=======
+>>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

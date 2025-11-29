@@ -4,7 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EmergencyButton from "@/components/EmergencyButton";
+<<<<<<< HEAD
 import EmergencyStatus from "@/components/EmergencyStatus";
+=======
+>>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
 import AlertCard from "@/components/AlertCard";
 import PlatformCard from "@/components/PlatformCard";
 import { Shield, Activity, LogOut, Users, AlertTriangle, Settings } from "lucide-react";
@@ -160,7 +163,11 @@ const Dashboard = () => {
                 Aegis
               </h1>
             </div>
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -275,8 +282,11 @@ const Dashboard = () => {
 
           {/* Right Column - Emergency */}
           <div className="space-y-6">
+<<<<<<< HEAD
             <EmergencyStatus />
 
+=======
+>>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
             <Card className="p-6 border-destructive/30">
               <h2 className="text-xl font-semibold mb-4">Emergency Protocol</h2>
               <p className="text-sm text-muted-foreground mb-6">
