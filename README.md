@@ -1,367 +1,182 @@
-AEGIS SHIELD - UNIVERSAL DIGITAL PROTECTION PLATFORM
-🏆 POWERHACK HACKATHON WINNING SOLUTION
+# Aegis Shield – Universal Digital Protection Platform
+
+[![PowerHack 2024 Winner](https://img.shields.io/badge/PowerHack%202024-Winner-blue)](https://powerhack.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegiss.netlify.app-blue)](https://aegiss.netlify.app)
+[![Pitch Deck](https://img.shields.io/badge/Pitch%20Deck-Canva-orange)](https://canva-link-provided)
+
 AI-Powered Protection Against Digital Violence for Women & Girls
 
-LIVE DEMO: aegiss.netlify.app
+## Table of Contents
+
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Key Features](#key-features)
+- [Technical Implementation](#technical-implementation)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Team](#team)
+- [Security & Privacy](#security--privacy)
+- [Impact](#impact)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Overview
+
+Aegis Shield is a universal digital protection platform designed to identify, classify, and respond to online threats targeting women and girls. The system monitors connected social media accounts, detects harmful interactions using AI, and triggers structured emergency response workflows to ensure user safety.
+
+Developed in 24 hours for PowerHack 2024 under the theme: "UNiTE to End Digital Violence Against All Women & Girls." Aegis Shield emerged as the winning project, recognized for its innovation, impact, and technical execution.
+
+## Problem Statement
+
+Digital violence—including harassment, cyberbullying, hate speech, and direct threats—has become a major safety issue for women and girls. Existing digital safety tools are fragmented, platform-specific, and lack automated emergency response capabilities.
+
+Aegis Shield addresses this by providing a single AI-driven protection layer across multiple social platforms with immediate safety action mechanisms.
+
+## Key Features
+
+### 1. Social Media Protection
+- Connect and monitor multiple social accounts.
+- Real-time AI scanning of comments and interactions.
+- Detection of harassment, hate speech, threats, and harmful patterns.
+- Severity-based threat classification: Low → Medium → High → Critical.
+- Platform connection health and monitoring dashboard.
+
+### 2. Intelligent Alert System
+- Multi-level threat scoring powered by AI.
+- Detailed alert logs with timestamps and platform context.
+- Real-time notifications for high and critical threats.
+- Exportable incident reports (CSV/PDF) for legal purposes.
+
+### 3. Safe Circle Emergency Network
+- Add trusted emergency contacts.
+- Custom alert thresholds per contact.
+- Automatic notifications on critical threats.
+- One-tap emergency activation for immediate help.
+- Multi-channel notifications (SMS, email, push).
+
+### 4. Mobile-First Safety Interface
+- Optimized for one-handed operation.
+- Always-visible emergency action button.
+- Offline support for key emergency functions.
+- High contrast and accessible design for stressful situations.
+
+## Technical Implementation
+
+### Architecture Overview
+```
+Frontend (React + TypeScript + PWA)
+         ↓
+Backend API (Node.js + Express)
+         ↓
+Social Media APIs (Twitter, Instagram, TikTok)
+         ↓
+Supabase (PostgreSQL + Real-time Subscriptions)
+         ↓
+AI Engine (Google Perspective API + Custom NLP)
+         ↓
+Notification Services (Safe Circle Alerts)
+```
 
+### Technology Stack
 
-PITCH DECK: https://www.canva.com/design/DAG6EYYS9cE/nFMP04RaqopmrFNdoXSa8w/edit?utm_content=DAG6EYYS9cE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+#### Frontend
+- React 18
+- TypeScript
+- Tailwind CSS
+- Supabase Authentication
+- Progressive Web App (PWA)
 
-📖 Overview
-Aegis Shield is a comprehensive digital protection platform designed to monitor social media interactions and provide immediate safety responses during threatening situations. The platform connects your social media accounts, scans for harmful content, and creates an emergency response network with your trusted contacts.
+#### Backend
+- Node.js
+- Express.js
+- Webhook ingestion handlers
+- Supabase PostgreSQL (real-time)
 
-🚀 Built in 24 hours for PowerHack Hackathon 2024
-Addressing the theme: "UNiTE to End Digital Violence Against All Women & Girls"
+#### AI & Machine Learning
+- Google Perspective API
+- Custom NLP-based threat classification
+- Multi-factor scoring model (context, frequency, severity)
+- Pattern detection for threat escalation
 
-🎯 What We Built
-Aegis Shield addresses the growing concern of online threats escalating into real-world danger. Our platform provides:
+## Installation
 
-Core Protection System
-Multi-platform social media monitoring (Twitter, Instagram, TikTok)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/JackyChris12/digital-shield-pro
+   cd digital-shield-pro
+   ```
 
-AI-powered threat detection in comments and interactions
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Real-time alert system for immediate threat notification
+3. Set up environment variables:
+   - Copy `.env.example` to `.env` and fill in your Supabase credentials and API keys.
 
-Emergency response network with trusted contacts
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-Mobile-optimized interface for emergency situations
+5. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-🏆 Hackathon Innovation Highlights
-Cross-platform protection - First solution that protects across ALL social media simultaneously
+## Usage
 
-Real-time AI analysis - Processes threats in under 2 seconds using Google Perspective API
+1. **Sign Up/Login**: Create an account or log in using Supabase authentication.
+2. **Connect Platforms**: Link your social media accounts (Twitter, Instagram, TikTok) in the Settings page.
+3. **Configure Safe Circle**: Add trusted contacts and set alert thresholds.
+4. **Monitor Alerts**: View real-time alerts on the Dashboard and respond to threats.
+5. **Emergency Activation**: Use the emergency button for immediate help in critical situations.
 
-Emergency protocols - One-click safety activation with automatic contact notification
+## Team
 
-Legal evidence generation - Exportable reports for law enforcement and documentation
+Aegis Shield was built by a focused, multidisciplinary team committed to solving a real-world digital safety problem.
 
-🛡️ Key Features
-1. Social Media Protection
-Cross-platform monitoring - Connect multiple social media accounts
+- **Brian** – Lead Developer & System Architect  
+  Designed overall system architecture and data flow. Developed the frontend using React + TypeScript with PWA capabilities. Implemented Supabase authentication and real-time database structures. Built backend services, AI threat analysis pipelines, and notification workflows. Integrated social media monitoring endpoints and deployed the full MVP.
 
-Real-time comment scanning - AI analyzes comments for threats, harassment, and hate speech
+- **Jackline** – UI/UX Lead & Accessibility Specialist  
+  Designed the mobile-first user interface optimized for emergency scenarios. Created user flows for Safe Circle, alert screens, and emergency activation. Ensured accessibility compliance (contrast, readability, stress-friendly UI). Developed visual identity and interactive layouts used throughout the platform.
 
-Threat classification - Categorizes threats by severity and type
+- **Silvia** – Research & Safety Insights Lead  
+  Conducted deep research on patterns of digital violence affecting women and girls. Defined the problem framework, threat categories, and safety needs. Created user personas, safety protocols, and requirement specifications. Informed the threat classification system and Safe Circle logic through analysis.
 
-Platform status tracking - Monitor connection health and scanning activity
+## Security & Privacy
 
-2. Intelligent Alert System
-Multi-level threat assessment:
+- Full user consent for all integrations.
+- Encrypted storage for incident records.
+- Strict data minimization (no unnecessary data retention).
+- GDPR-aligned data handling approach.
 
-Low: General negativity
+## Impact
 
-Medium: Harassment and bullying
+Aegis Shield enhances digital safety by offering:
 
-High: Hate speech and intimidation
+- Universal monitoring across social platforms
+- AI-driven threat detection
+- Immediate emergency escalation
+- Evidence-backed safety reporting
 
-Critical: Direct threats and danger indicators
+The platform empowers women and girls to navigate online spaces with improved security and confidence.
 
-Real-time notifications with detailed threat context
+## Contributing
 
-Alert history with filtering and search capabilities
+We welcome contributions to improve Aegis Shield. Please follow these steps:
 
-Export functionality for documentation and reporting
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature-name`.
+3. Commit your changes: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature/your-feature-name`.
+5. Open a pull request.
 
-3. Safe Circle Emergency Network
-Trusted contact management - Add family, friends, or emergency contacts
+## License
 
-Custom notification preferences - Set alert levels for each contact
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Automatic emergency notifications - Critical threats trigger immediate contact alerts
+## Contact
 
-One-click emergency activation - Manual emergency mode for immediate situations
+The team remains open to partnerships, integrations, and further development opportunities to scale the solution and reach more communities.
 
-4. Mobile-First Safety Design
-Thumb-optimized interface - Critical functions accessible one-handed
-
-Emergency button placement - Always available, panic-friendly positioning
-
-Offline capability - Core functions work without internet connection
-
-Accessibility focused - Designed for high-stress situations
-
-🏗️ Technical Implementation
-Architecture Overview
-text
-Frontend (React/TypeScript) → API Layer → Social Media APIs
-       ↓
-Real-time Database ←→ AI Analysis Engine
-       ↓
-Notification Service → Safe Circle Contacts
-Technology Stack
-Frontend
-
-React 18 with TypeScript for type safety
-
-Tailwind CSS for responsive, utility-first styling
-
-Supabase for real-time database and authentication
-
-PWA capabilities for mobile app-like experience
-
-Backend & Services
-
-Node.js with Express.js API server
-
-Supabase for PostgreSQL database with real-time subscriptions
-
-Social Media APIs (Twitter, Instagram, TikTok) for content monitoring
-
-Webhook handlers for real-time social media updates
-
-AI & Analysis
-
-Google Perspective API for toxicity scoring
-
-Custom NLP models for threat classification
-
-Sentiment analysis for comment evaluation
-
-Pattern recognition for threat escalation detection
-
-Key Technical Features
-Real-time Monitoring
-
-typescript
-// Webhook-based social media monitoring
-platformWebhooks.onNewComment((comment) => {
-  const threatAnalysis = aiEngine.analyzeThreat(comment);
-  if (threatAnalysis.level > THRESHOLD) {
-    alertSystem.createAlert(threatAnalysis);
-    safeCircle.notifyContacts(threatAnalysis);
-  }
-});
-Mobile Emergency Optimization
-
-css
-/* Emergency button always accessible */
-.emergency-protocol {
-  position: fixed;
-  bottom: env(safe-area-inset-bottom, 20px);
-  right: 20px;
-  width: 80px;
-  height: 80px;
-  z-index: 10000;
-  touch-action: manipulation;
-}
-📱 User Experience
-Onboarding Flow
-Account Creation - Secure signup with email verification
-
-Social Media Connection - OAuth integration with major platforms
-
-Safe Circle Setup - Add emergency contacts with notification preferences
-
-Protection Activation - Real-time monitoring begins immediately
-
-Daily Protection
-Dashboard overview of protection status and recent alerts
-
-Platform connection management for adding/removing social accounts
-
-Alert review and management for addressing detected threats
-
-Safe Circle updates for contact information and preferences
-
-Emergency Scenarios
-Automatic emergency activation when critical threats are detected
-
-Manual emergency trigger via one-click emergency button
-
-Contact notification system with threat details and user status
-
-Post-emergency reporting for documentation and analysis
-
-🔧 Installation & Setup
-Prerequisites
-Node.js 18.0 or higher
-
-Social media developer accounts (Twitter, Instagram, TikTok)
-
-Supabase account for database and authentication
-
-Local Development
-Clone the repository
-
-bash
-git clone https://github.com/your-username/aegis-shield.git
-cd aegis-shield
-Install dependencies
-
-bash
-npm install
-Environment configuration
-
-bash
-cp .env.example .env
-Edit .env with your configuration:
-
-env
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-TWITTER_CLIENT_ID=your_twitter_client_id
-INSTAGRAM_CLIENT_ID=your_instagram_client_id
-TIKTOK_CLIENT_KEY=your_tiktok_client_key
-Database setup
-
-sql
--- Run the initial schema in your Supabase SQL editor
--- (Schema provided in /database/setup.sql)
-Start development server
-
-bash
-npm run dev
-Production Deployment
-Build the application
-
-bash
-npm run build
-Deploy to Vercel
-
-Connected automatically via GitHub integration
-
-Environment variables configured in Vercel dashboard
-
-Automatic deployments on main branch updates
-
-🗂️ Project Structure
-text
-aegis-shield/
-├── src/
-│   ├── components/          # React components
-│   │   ├── dashboard/       # Dashboard and overview
-│   │   ├── alerts/          # Alert management
-│   │   ├── safe-circle/     # Emergency contact management
-│   │   └── settings/        # User preferences
-│   ├── contexts/            # React contexts (auth, theme, etc.)
-│   ├── hooks/               # Custom React hooks
-│   ├── services/            # API and external service integrations
-│   ├── types/               # TypeScript type definitions
-│   └── utils/               # Utility functions
-├── public/                  # Static assets
-├── database/                # Database schema and migrations
-└── docs/                    # Additional documentation
-🔐 Security & Privacy
-Data Protection
-End-to-end encryption for sensitive communications
-
-Secure token management for social media connections
-
-Data minimization - only necessary information is stored
-
-Regular security audits and vulnerability assessments
-
-Privacy Commitment
-User control over all connected accounts and data
-
-Transparent data usage with clear privacy policies
-
-Contact verification for Safe Circle members
-
-Data export and deletion capabilities
-
-🎯 Hackathon Impact & Metrics
-Problem Solved
-76% of African women experience online harassment
-
-Fragmented protection across multiple platforms
-
-Ineffective reporting systems for digital violence
-
-Lack of cross-platform threat pattern recognition
-
-Our Solution Delivers
-✅ Real-time protection across all connected platforms
-
-✅ AI-powered detection with 95%+ accuracy
-
-✅ Instant emergency response network activation
-
-✅ Court-admissible evidence generation
-
-✅ Mobile-optimized for emergency situations
-
-24-Hour Achievement
-🚀 Working prototype with live social media integration
-
-⚡ Real-time AI processing under 2 seconds
-
-🔗 Multiple platform APIs successfully integrated
-
-📱 Mobile-responsive emergency interface
-
-🛡️ Complete safety protocol implementation
-
-🌟 Future Enhancements
-Planned Features
-Additional platform support (Facebook, LinkedIn, YouTube)
-
-Advanced AI models for better threat detection accuracy
-
-Multi-language support for global accessibility
-
-Law enforcement integration for severe threat escalation
-
-Community safety features for group protection
-
-Technical Improvements
-Enhanced mobile performance for low-bandwidth situations
-
-Advanced analytics for threat pattern recognition
-
-API rate limit optimization for better scalability
-
-Cross-platform mobile apps (iOS, Android)
-
-🤝 Contributing
-We welcome contributions to improve Aegis Shield. Please see our Contributing Guidelines for details on:
-
-Code standards and style guidelines
-
-Pull request process
-
-Issue reporting and bug tracking
-
-Feature request submissions
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-👥 Team
-Aegis Shield was developed by a dedicated team focused on creating meaningful digital safety solutions. Our team brings together expertise in full-stack development, UX design, security, and AI implementation.
-
-Jackline Kibiwott - Backend APIs and Data Analytics
-
-Brian Kioko - Backend Engineering and AI Integration
-
-Silvia Njeri - Frontend Development and UX Design
-
-
-📞 Support & Contact
-For technical support, feature requests, or security concerns:
-
-GitHub Issues: Create an issue in our repository
-
-Documentation: Project docs and API references
-
-Security Reports: security@aegisshield.com
-
-Hackathon Submission: PowerHack Devpost entry
-
-🙏 Acknowledgments
-We extend our gratitude to:
-
-The PowerHack Hackathon organizers for this important challenge
-
-The open-source community for invaluable tools and libraries
-
-Social media platforms for their API access and developer support
-
-Early testers and contributors who helped shape the platform
-
-Security researchers who provided valuable feedback
-
-Aegis Shield - Building a safer digital world for women and girls, one connection at a time.
-
-*🏆 PowerHack Hackathon 2024 - Ending Digital Violence Against Women & Girls*
+For inquiries, please contact us at [team@aegisshield.com](mailto:team@aegisshield.com).
