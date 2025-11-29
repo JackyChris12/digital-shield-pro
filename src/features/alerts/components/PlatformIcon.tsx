@@ -3,7 +3,7 @@ import { Platform } from '../types';
 import {
     TwitterOutlined,
     InstagramOutlined,
-    WhatsAppOutlined,
+    VideoCameraOutlined,
     MailOutlined,
     GlobalOutlined
 } from '@ant-design/icons';
@@ -21,8 +21,8 @@ const PlatformIcon: React.FC<PlatformIconProps> = ({ platform, size = 24 }) => {
             return <TwitterOutlined style={{ ...iconStyle, color: '#1DA1F2' }} />;
         case 'instagram':
             return <InstagramOutlined style={{ ...iconStyle, color: '#E1306C' }} />;
-        case 'whatsapp':
-            return <WhatsAppOutlined style={{ ...iconStyle, color: '#25D366' }} />;
+        case 'tiktok':
+            return <VideoCameraOutlined style={{ ...iconStyle, color: '#000000' }} />;
         case 'email':
             return <MailOutlined style={{ ...iconStyle, color: '#EA4335' }} />;
         case 'web':

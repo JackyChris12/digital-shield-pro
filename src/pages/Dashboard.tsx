@@ -219,7 +219,7 @@ const Dashboard = () => {
                 Connected Platforms
               </h2>
               <div className="grid gap-4">
-                {["twitter", "instagram", "whatsapp"].map((platformName) => {
+                {["twitter", "instagram", "tiktok"].map((platformName) => {
                   const platform = platforms.find((p) => p.platform_name === platformName);
                   return (
                     <PlatformCard

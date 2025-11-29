@@ -4,7 +4,7 @@ import { Alert, AlertSeverity, AlertStatus, AlertType, Platform } from '../types
 import {
     MobileOutlined, GlobalOutlined, ClockCircleOutlined,
     FireOutlined, WarningOutlined, SafetyCertificateOutlined,
-    TwitterOutlined, InstagramOutlined, WhatsAppOutlined, MailOutlined, GlobalOutlined as WebOutlined
+    TwitterOutlined, InstagramOutlined, WhatsAppOutlined, MailOutlined, GlobalOutlined as WebOutlined, VideoCameraOutlined
 } from '@ant-design/icons';
 
 interface AlertTableProps {
@@ -38,7 +38,7 @@ const getPlatformIcon = (platform: Platform) => {
     switch (platform) {
         case 'twitter': return <TwitterOutlined style={{ color: '#1DA1F2' }} />;
         case 'instagram': return <InstagramOutlined style={{ color: '#E1306C' }} />;
-        case 'whatsapp': return <WhatsAppOutlined style={{ color: '#25D366' }} />;
+        case 'tiktok': return <VideoCameraOutlined style={{ color: '#000000' }} />;
         case 'email': return <MailOutlined style={{ color: '#EA4335' }} />;
         case 'web': return <WebOutlined style={{ color: '#888' }} />;
         default: return <GlobalOutlined />;

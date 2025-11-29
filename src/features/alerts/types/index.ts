@@ -1,5 +1,5 @@
 // Platform-specific alert types for real social media integration
-export type Platform = 'twitter' | 'instagram' | 'whatsapp' | 'email' | 'web';
+export type Platform = 'twitter' | 'instagram' | 'tiktok' | 'email' | 'web';
 
 export type ThreatType =
     | 'harassment'

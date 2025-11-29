@@ -4,14 +4,14 @@ import { FilterOutlined, ReloadOutlined, BellOutlined, FireOutlined, DownloadOut
 import { useTheme } from 'next-themes';
 import AlertTable from './components/AlertTable';
 import AlertDetailsModal from './components/AlertDetailsModal';
-import { useAlerts } from './hooks/useAlerts';
+import { useRealtimeAlerts } from '../../hooks/useRealtimeAlerts';
 import { Alert } from './types';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 const { Title, Text } = Typography;
 
 const AlertsPage = () => {
-    const { data: alerts = [], isLoading, isRefetching, refetch } = useAlerts();
+    const { alerts = [], loading: isLoading, addDemoAlert, clearAlerts, refetch } = useRealtimeAlerts();
     const [searchText, setSearchText] = useState('');
     const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
@@ -40,6 +40,20 @@ const AlertsPage = () => {
     const handleRefresh = async () => {
         await refetch();
         message.success('Alerts updated successfully');
+    };
+
+    const handleAddDemo = async () => {
+        const result = await addDemoAlert();
+        if (result?.error) {
+            message.error('Failed to add demo alert: ' + result.error.message);
+        } else {
+            message.success('Demo alert added');
+        }
+    };
+
+    const handleClear = async () => {
+        await clearAlerts();
+        message.success('All alerts cleared');
     };
 
     const handleExport = () => {
@@ -106,10 +120,12 @@ const AlertsPage = () => {
                     </Text>
                 </div>
                 <Space>
+                    <Button onClick={handleAddDemo}>Add Demo Alert</Button>
+                    <Button danger onClick={handleClear}>Clear All</Button>
                     <Button
-                        icon={<ReloadOutlined spin={isRefetching} />}
+                        icon={<ReloadOutlined spin={isLoading} />}
                         onClick={handleRefresh}
-                        loading={isRefetching}
+                        loading={isLoading}
                     >
                         Refresh
                     </Button>
