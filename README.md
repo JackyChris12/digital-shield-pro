@@ -1,73 +1,116 @@
-# Welcome to your Lovable project
+# Aegis
 
-## Project info
+Aegis: In Greek mythology, the Aegis was the divine shield of Zeus and Athena - an impenetrable protection that could not be shattered. A comprehensive digital safety platform designed to protect women and girls from online violence through instant emergency response, proactive safety tools, and educational resources.
 
-**URL**: https://lovable.dev/projects/723835d8-f243-43c0-9db7-4c3974913ce3
+## 🎯 Hackathon Alignment
 
-## How can I edit this code?
+**Primary Themes Addressed:**
 
-There are several ways of editing your application.
+- 🏆 **Safety by Design** - Built-in protection features and secure architecture
+- 🏆 **Survivor Support** - Crisis management and incident documentation
+- 🏆 **Digital Literacy** - Educational safety tools and privacy guidance
 
-**Use Lovable**
+**Challenge Area:** Safety by Design with Integrated Survivor Support
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/723835d8-f243-43c0-9db7-4c3974913ce3) and start prompting.
+## 🚀 Features
 
-Changes made via Lovable will be committed automatically to this repo.
+### ⚡ Core Emergency Features
+- **One-Tap Emergency Button** - Instant alert to safe circle contacts
+- **Safe Circle Management** - Trusted contact network with escalation protocols
+- **Incident Documentation** - Secure logging and evidence preservation
+- **Location-Based Resources** - Local support services and helplines
 
-**Use your preferred IDE**
+### 🛡️ Proactive Protection
+- **Social Media Safety Dashboard** - Platform risk assessment and privacy management
+- **Safety Scoring System** - Personalized risk evaluation and improvement tracking
+- **Privacy Configuration Wizard** - Step-by-step security setup
+- **Digital Literacy Tools** - Educational content and best practices
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📱 Platform Features
+- **Mobile-First Design** - Optimized for smartphone emergency use
+- **Offline Capability** - Critical functions available without internet
+- **Trauma-Informed UI** - Calming colors and clear, empathetic language
+- **Accessibility Focused** - Screen reader compatible and keyboard navigable
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🏗️ Technical Architecture
 
-Follow these steps:
+### Frontend
+- React 18 with TypeScript for type-safe development
+- Vite for fast builds and optimal performance
+- shadcn/ui components with Tailwind CSS for consistent, accessible UI
+- Mobile-first responsive design
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Backend & Database
+- Supabase for authentication and real-time database
+- PostgreSQL with Row Level Security (RLS)
+- Serverless Functions for emergency notifications
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Security & Privacy
+- End-to-end encryption for sensitive data
+- Minimal data collection principle
+- Privacy-by-design architecture
+- Secure authentication with Supabase Auth
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 👥 Team Roles
+- **Miss Tech** - Dashboard & Emergency Features
+- **Wanjohi** - Main Dashboard & Navigation
+- **Silvia** - Alerts System & Incident Management
+- **Miss AI** - Safe Circle & Contact Coordination
+- **Brian** - Settings & Social Media Safety
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 🎯 Demo Highlights
 
-**Edit a file directly in GitHub**
+### Emergency Flow Demonstration
+- One-tap emergency activation
+- Automated safe circle notifications
+- Incident logging and documentation
+- Resource coordination
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Safety Management Showcase
+- Social media risk assessment
+- Privacy configuration tools
+- Safety scoring and improvements
+- Educational content delivery
 
-**Use GitHub Codespaces**
+## 🌍 Getting Started
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Prerequisites
+- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Supabase account for backend services
 
-## What technologies are used for this project?
+### Installation
 
-This project is built with:
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/JackyChris12/digital-shield-pro
+   cd digital-shield-pro
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
 
-## How can I deploy this project?
+3. **Configure Supabase**
+   - Set up your Supabase project
+   - Update environment variables for Supabase client configuration
 
-Simply open [Lovable](https://lovable.dev/projects/723835d8-f243-43c0-9db7-4c3974913ce3) and click on Share -> Publish.
+4. **Start the development server**
+   ```sh
+   npm run dev
+   ```
 
-## Can I connect a custom domain to my Lovable project?
+### Deployment
+Deploy via your preferred hosting platform (e.g., Vercel, Netlify) or integrate with Supabase for full-stack deployment.
 
-Yes, you can!
+## Technologies Used
+- **Frontend:** React 18, TypeScript, Vite, shadcn/ui, Tailwind CSS
+- **Backend:** Supabase (Auth, Database, Serverless Functions)
+- **Database:** PostgreSQL with RLS
+- **Security:** End-to-end encryption, Privacy-by-design
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contributing
+Contributions are welcome! Please focus on enhancing safety features, improving accessibility, and expanding educational resources.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## License
+This project is dedicated to empowering women and girls with digital safety tools. Please respect the mission and contribute responsibly.
