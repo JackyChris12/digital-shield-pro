@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Button, Avatar, Dropdown, Space, Breadcrumb, theme, ConfigProvider } from 'antd';
 import {
     DashboardOutlined, AlertOutlined, TeamOutlined, SettingOutlined,
     MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, LogoutOutlined,
-    MoonOutlined, SunOutlined
+    MoonOutlined, SunOutlined, SafetyOutlined
 } from '@ant-design/icons';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useTheme } from 'next-themes';
@@ -13,12 +13,34 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const [userName, setUserName] = useState<string>('Loading...');
     const navigate = useNavigate();
     const location = useLocation();
     const { theme: currentTheme, setTheme } = useTheme();
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    useEffect(() => {
+        loadUserData();
+    }, []);
+
+    const loadUserData = async () => {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                // Try to get user metadata name, fallback to email username
+                const displayName = user.user_metadata?.full_name ||
+                    user.user_metadata?.name ||
+                    user.email?.split('@')[0] ||
+                    'User';
+                setUserName(displayName);
+            }
+        } catch (error) {
+            console.error('Error loading user:', error);
+            setUserName('User');
+        }
+    };
 
     const menuItems = [
         {
@@ -30,6 +52,11 @@ const MainLayout: React.FC = () => {
             key: '/alerts-history',
             icon: <AlertOutlined />,
             label: 'Alert History',
+        },
+        {
+            key: '/social-monitoring',
+            icon: <SafetyOutlined />,
+            label: 'Social Monitoring',
         },
         {
             key: '/safe-circle',
@@ -126,7 +153,21 @@ const MainLayout: React.FC = () => {
             }}
         >
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider trigger={null} collapsible collapsed={collapsed} theme={currentTheme === 'dark' ? 'dark' : 'light'} style={{ borderRight: '1px solid #f0f0f0' }}>
+                <Sider
+                    trigger={null}
+                    collapsible
+                    collapsed={collapsed}
+                    theme={currentTheme === 'dark' ? 'dark' : 'light'}
+                    style={{
+                        borderRight: '1px solid #f0f0f0',
+                        overflow: 'auto',
+                        height: '100vh',
+                        position: 'fixed',
+                        left: 0,
+                        top: 0,
+                        bottom: 0
+                    }}
+                >
                     <div style={{ height: 64, margin: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                         <div style={{ width: 32, height: 32, background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>A</div>
                         {!collapsed && <span style={{ fontSize: 18, fontWeight: 'bold', color: '#1890ff' }}>Aegis</span>}
@@ -140,7 +181,7 @@ const MainLayout: React.FC = () => {
                         style={{ borderRight: 0 }}
                     />
                 </Sider>
-                <Layout>
+                <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
                     <Header style={{
                         padding: '0 24px',
                         background: currentTheme === 'dark' ? '#1d2b3a' : colorBgContainer,
@@ -176,7 +217,7 @@ const MainLayout: React.FC = () => {
                                     <span style={{
                                         fontWeight: 500,
                                         color: currentTheme === 'dark' ? '#ffffff' : undefined
-                                    }}>Jane Doe</span>
+                                    }}>{userName}</span>
                                 </Space>
                             </Dropdown>
                         </Space>

@@ -11,6 +11,7 @@ import AlertHistory from "./features/alerts/AlertsPage";
 import SafeCircle from "./pages/SafeCircle";
 import Settings from "./pages/Settings";
 import SeedData from "./pages/SeedData";
+import SocialMonitoring from "./pages/SocialMonitoring";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./components/layout/MainLayout";
@@ -69,6 +70,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <SeedData />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/social-monitoring"
+                element={
+                  <ProtectedRoute>
+                    <SocialMonitoring />
                   </ProtectedRoute>
                 }
               />

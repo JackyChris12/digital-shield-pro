@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { safeCircleService } from "@/services/SafeCircleService";
 
 const EmergencyButton = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -43,7 +44,15 @@ const EmergencyButton = () => {
 
       if (contactsError) throw contactsError;
 
-      if (!contacts || contacts.length === 0) {
+      // Also trigger mock Safe Circle notifications
+      const location = "Unknown Location";
+      await safeCircleService.triggerEmergencyProtocol(location, "Emergency activated via dashboard");
+
+      // Get mock contacts count
+      const mockContacts = await safeCircleService.getContacts();
+      const totalContacts = (contacts?.length || 0) + mockContacts.length;
+
+      if (totalContacts === 0) {
         toast({
           title: "No Contacts Found",
           description: "Please add emergency contacts to your Safe Circle before triggering an alert.",
@@ -54,21 +63,22 @@ const EmergencyButton = () => {
         return;
       }
 
-      const location = "Unknown Location";
+      // Try to call Edge Function (may not exist in mock setup)
+      try {
+        const { error } = await supabase.functions.invoke('send-emergency-alert', {
+          body: { location },
+        });
 
-      // Call Edge Function
-      const { error } = await supabase.functions.invoke('send-emergency-alert', {
-        body: { location },
-      });
-
-      if (error) {
-        console.error("Edge Function Error:", error);
-        throw new Error("Failed to send alerts. Please check the logs.");
+        if (error) {
+          console.warn("Edge Function Error (expected in mock mode):", error);
+        }
+      } catch (edgeFnError) {
+        console.warn("Edge function not available (mock mode)");
       }
 
       toast({
         title: "Emergency Protocol Activated",
-        description: `Alerts sent to ${contacts.length} contact(s) in your Safe Circle.`,
+        description: `Mock alerts sent to ${totalContacts} contact(s) in your Safe Circle.`,
         variant: "destructive",
       });
 

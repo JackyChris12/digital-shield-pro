@@ -7,12 +7,16 @@ import { format } from "date-fns";
 interface Alert {
   id: string;
   platform: string;
-  message: string;
-  sender: string;
-  toxicity_score: number;
-  threat_level: "low" | "medium" | "high";
+  message?: string;
+  comment?: string;
+  sender?: string;
+  author?: string;
+  toxicity_score?: number;
+  severity?: string;
+  threat_level?: "low" | "medium" | "high";
   status: string;
-  created_at: string;
+  created_at?: string;
+  timestamp?: Date;
 }
 
 interface AlertCardProps {
@@ -22,11 +26,42 @@ interface AlertCardProps {
 }
 
 const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
+  // Handle both Supabase alerts (threat_level) and mock alerts (severity)
+  const threatLevel = alert.threat_level || alert.severity || 'low';
   const threatColor = {
     high: "threat-high",
+    critical: "threat-high",
     medium: "threat-medium",
     low: "threat-low",
-  }[alert.threat_level];
+  }[threatLevel as string] || "threat-low";
+
+  // Get the date from either created_at or timestamp
+  const getAlertDate = () => {
+    if (alert.timestamp) {
+      return alert.timestamp instanceof Date ? alert.timestamp : new Date(alert.timestamp);
+    }
+    if (alert.created_at) {
+      return new Date(alert.created_at);
+    }
+    return new Date();
+  };
+
+  const formatDate = () => {
+    try {
+      const date = getAlertDate();
+      if (isNaN(date.getTime())) {
+        return 'Invalid date';
+      }
+      return format(date, "MMM d, h:mm a");
+    } catch (error) {
+      return 'Invalid date';
+    }
+  };
+
+  // Get message from either message or comment field
+  const displayMessage = alert.message || alert.comment || 'No message';
+  // Get sender from either sender or author field
+  const displaySender = alert.sender || alert.author || 'Unknown';
 
   return (
     <Card className="p-4 border-l-4 hover:bg-card/50 transition-colors" style={{ borderLeftColor: `hsl(var(--${threatColor}))` }}>
@@ -36,33 +71,35 @@ const AlertCard = ({ alert, onBlock, onIgnore }: AlertCardProps) => {
           <Badge variant="outline" className="capitalize">
             {alert.platform}
           </Badge>
-          <Badge 
+          <Badge
             className="capitalize"
-            style={{ 
+            style={{
               backgroundColor: `hsl(var(--${threatColor}) / 0.2)`,
               color: `hsl(var(--${threatColor}))`,
               border: `1px solid hsl(var(--${threatColor}) / 0.3)`
             }}
           >
-            {alert.threat_level} threat
+            {threatLevel} threat
           </Badge>
         </div>
         <span className="text-xs text-muted-foreground">
-          {format(new Date(alert.created_at), "MMM d, h:mm a")}
+          {formatDate()}
         </span>
       </div>
 
       <div className="space-y-2">
         <div>
           <span className="text-sm text-muted-foreground">From: </span>
-          <span className="text-sm font-medium">{alert.sender}</span>
+          <span className="text-sm font-medium">{displaySender}</span>
         </div>
         <p className="text-sm text-foreground line-clamp-2">
-          {alert.message}
+          {displayMessage}
         </p>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>Toxicity Score: {(alert.toxicity_score * 100).toFixed(1)}%</span>
-        </div>
+        {alert.toxicity_score !== undefined && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Toxicity Score: {(alert.toxicity_score * 100).toFixed(1)}%</span>
+          </div>
+        )}
       </div>
 
       {alert.status === "new" && (
