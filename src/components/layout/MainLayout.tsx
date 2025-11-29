@@ -10,6 +10,7 @@ import { useTheme } from 'next-themes';
 import { supabase } from '@/integrations/supabase/client';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import MobileEmergencyButton from '@/components/MobileEmergencyButton';
+import { ChatWidget } from '@/components/ChatWidget';
 
 const { Header, Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -258,6 +259,7 @@ const MainLayout: React.FC = () => {
                             <MobileEmergencyButton />
                         </>
                     )}
+                    <ChatWidget />
                 </Layout>
             </Layout>
         </ConfigProvider>
