@@ -1,6 +1,6 @@
 # Aegis Shield – Universal Digital Protection Platform
 
-[![PowerHack 2024 Winner](https://img.shields.io/badge/PowerHack%202024-Winner-blue)](https://powerhack.com)
+[![PowerHack 2025 Winner](https://img.shields.io/badge/PowerHack%202024-Winner-blue)](https://powerhack.com)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-aegiss.netlify.app-blue)](https://aegiss.netlify.app)
 [![Pitch Deck](https://img.shields.io/badge/Pitch%20Deck-Canva-orange)](https://canva-link-provided)
 
@@ -25,7 +25,7 @@ AI-Powered Protection Against Digital Violence for Women & Girls
 
 Aegis Shield is a universal digital protection platform designed to identify, classify, and respond to online threats targeting women and girls. The system monitors connected social media accounts, detects harmful interactions using AI, and triggers structured emergency response workflows to ensure user safety.
 
-Developed in 24 hours for PowerHack 2024 under the theme: "UNiTE to End Digital Violence Against All Women & Girls." Aegis Shield emerged as the winning project, recognized for its innovation, impact, and technical execution.
+Developed in 24 hours for PowerHack 2025 under the theme: "UNiTE to End Digital Violence Against All Women & Girls." Aegis Shield emerged as the winning project, recognized for its innovation, impact, and technical execution.
 
 ## Problem Statement
 
