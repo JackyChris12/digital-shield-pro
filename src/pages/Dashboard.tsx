@@ -82,36 +82,22 @@ const Dashboard = () => {
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    // Mock sign out for demo
     navigate("/auth");
   };
 
   const handleBlockAlert = async (alertId: string) => {
-    try {
-      const { error } = await supabase
-        .from("alerts")
-        .update({ status: "blocked" })
-        .eq("id", alertId);
+    // Mock block alert for demo
+    setAlerts((prev) =>
+      prev.map((alert) =>
+        alert.id === alertId ? { ...alert, status: "blocked" } : alert
+      )
+    );
 
-      if (error) throw error;
-
-      setAlerts((prev) =>
-        prev.map((alert) =>
-          alert.id === alertId ? { ...alert, status: "blocked" } : alert
-        )
-      );
-
-      toast({
-        title: "Alert Blocked",
-        description: "The sender has been blocked.",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    toast({
+      title: "Alert Blocked",
+      description: "The sender has been blocked.",
+    });
   };
 
   const handleIgnoreAlert = async (alertId: string) => {
