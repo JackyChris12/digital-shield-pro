@@ -1,7 +1,7 @@
 # Aegis Shield – Universal Digital Protection Platform
 
 [![PowerHack 2025 Winner](https://img.shields.io/badge/PowerHack%202025-Winner-blue)](https://powerhack.com)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegiss.netlify.app-blue)](https://digital-shield-pro.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20aegis-blue)](https://digital-shield-pro.vercel.app/)
 [![Pitch Deck](https://img.shields.io/badge/Pitch%20Deck-Canva-orange)](https://www.canva.com/design/DAG6EYYS9cE/nFMP04RaqopmrFNdoXSa8w/edit)
 
 AI-Powered Protection Against Digital Violence for Women & Girls
