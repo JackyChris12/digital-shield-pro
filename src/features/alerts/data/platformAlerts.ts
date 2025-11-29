@@ -5,7 +5,7 @@ const generateSender = (platform: Platform): string => {
     switch (platform) {
         case 'twitter': return `@${['stalker_acc', 'toxic_user92', 'harasser_x', 'anon_threat', 'badactor123'][Math.floor(Math.random() * 5)]}`;
         case 'instagram': return `@${['creepy_follower', 'fake_account_', 'threatener99', 'stalker_insta', 'hate_page'][Math.floor(Math.random() * 5)]}`;
-        case 'whatsapp': return `+254${Math.floor(Math.random() * 900000000 + 100000000)}`;
+        case 'tiktok': return `+254${Math.floor(Math.random() * 900000000 + 100000000)}`;
         case 'email': return `${['suspicious', 'phishing', 'scammer', 'fraudster', 'harasser'][Math.floor(Math.random() * 5)]}@${['gmail.com', 'yahoo.com', 'tempmail.com'][Math.floor(Math.random() * 3)]}`;
         case 'web': return 'Anonymous';
     }
@@ -180,7 +180,7 @@ export const platformAlerts: Alert[] = [
     // Instagram harassment (40)
     ...Array.from({ length: 40 }, (_, i) => generatePlatformAlert('instagram', i + 40)),
     // WhatsApp threats (40)
-    ...Array.from({ length: 40 }, (_, i) => generatePlatformAlert('whatsapp', i + 80)),
+    ...Array.from({ length: 40 }, (_, i) => generatePlatformAlert('tiktok', i + 80)),
     // Email phishing (40)
     ...Array.from({ length: 40 }, (_, i) => generatePlatformAlert('email', i + 120)),
     // Web-based threats (40)

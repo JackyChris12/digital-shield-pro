@@ -23,16 +23,6 @@ const EmergencyButton = () => {
     setActivating(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-<<<<<<< HEAD
-
-      if (!user) throw new Error("Not authenticated");
-
-      // First check if user has any contacts
-      const { data: contacts, error: contactsError } = await supabase
-        .from("emergency_contacts")
-        .select("id")
-=======
-      
       if (!user) throw new Error("Not authenticated");
 
       // Log the emergency event
@@ -49,12 +39,10 @@ const EmergencyButton = () => {
       const { data: contacts, error: contactsError } = await supabase
         .from("emergency_contacts")
         .select("*")
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
         .eq("user_id", user.id);
 
       if (contactsError) throw contactsError;
 
-<<<<<<< HEAD
       if (!contacts || contacts.length === 0) {
         toast({
           title: "No Contacts Found",
@@ -69,7 +57,7 @@ const EmergencyButton = () => {
       const location = "Unknown Location";
 
       // Call Edge Function
-      const { data, error } = await supabase.functions.invoke('send-emergency-alert', {
+      const { error } = await supabase.functions.invoke('send-emergency-alert', {
         body: { location },
       });
 
@@ -90,21 +78,6 @@ const EmergencyButton = () => {
       toast({
         title: "Emergency Activation Failed",
         description: error.message || "Please check console for details",
-=======
-      toast({
-        title: "Emergency Protocol Activated",
-        description: `Alert sent to ${contacts?.length || 0} emergency contacts.`,
-        variant: "destructive",
-      });
-
-      // TODO: In production, trigger email/SMS to emergency contacts via edge function
-      
-      setShowDialog(false);
-    } catch (error: any) {
-      toast({
-        title: "Emergency Activation Failed",
-        description: error.message,
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
         variant: "destructive",
       });
     } finally {
@@ -130,11 +103,7 @@ const EmergencyButton = () => {
               Activate Emergency Protocol?
             </AlertDialogTitle>
             <AlertDialogDescription>
-<<<<<<< HEAD
-              This will send email alerts to all your Safe Circle contacts.
-=======
-              This will immediately alert all your Safe Circle contacts and log this emergency event.
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
+              This will immediately alert all your Safe Circle contacts via email and log this emergency event.
               Only use in genuine emergencies.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -145,11 +114,7 @@ const EmergencyButton = () => {
               disabled={activating}
               className="bg-destructive hover:bg-destructive/90"
             >
-<<<<<<< HEAD
-              {activating ? "Sending Alerts..." : "Activate Emergency"}
-=======
               {activating ? "Activating..." : "Activate Emergency"}
->>>>>>> afe50fa8cfcf3786002e16c90dacd470dd52e28b
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
